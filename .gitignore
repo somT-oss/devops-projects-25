@@ -1,0 +1,4 @@
+3-tier-architecture/module/.terraform.lock.hcl
+3-tier-architecture/module/terraform.tfstate.backup
+3-tier-architecture/module/terraform.tfstate
+3-tier-architecture/module/.terraform/*
