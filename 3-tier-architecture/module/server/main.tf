@@ -97,8 +97,8 @@ resource "aws_instance" "webserver" {
 
     user_data = <<-EOF
     #!/bin/bash
-    sudo apt update -y
-    sudo apt install -y nginx
+    sudo yum update -y
+    sudo amazon-linux-extras install nginx1 -y
     sudo systemctl enable nginx
     sudo systemctl start nginx
     EOF
