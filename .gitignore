@@ -2,3 +2,5 @@
 3-tier-architecture/module/terraform.tfstate.backup
 3-tier-architecture/module/terraform.tfstate
 3-tier-architecture/module/.terraform/*
+3-tier-architecture/module/webserver.pem
+3-tier-architecture/module/.terraform.tfstate.lock.info

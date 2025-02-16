@@ -1,3 +1,19 @@
+resource "tls_private_key" "ssh_key" {
+    algorithm = "RSA"
+    rsa_bits = 4096
+}
+
+
+resource "aws_key_pair" "ssh_key_pair" {
+    key_name = "webserver_key"
+    public_key = tls_private_key.ssh_key.public_key_openssh
+
+    provisioner "local-exec" {
+        command = "echo '${tls_private_key.ssh_key.private_key_pem}' > ./webserver.pem"
+    }
+}
+
+
 resource "aws_vpc" "webserver_vpc" {
     cidr_block = var.vpc_cidr_block_ip
 
@@ -86,6 +102,7 @@ resource "aws_instance" "webserver" {
     associate_public_ip_address = true
     subnet_id = aws_subnet.webserver_subnet.id
     vpc_security_group_ids = [aws_security_group.webserver_sg.id]
+    key_name = aws_key_pair.ssh_key_pair.key_name
 
     credit_specification {
         cpu_credits = "standard"
@@ -98,7 +115,7 @@ resource "aws_instance" "webserver" {
     user_data = <<-EOF
     #!/bin/bash
     sudo yum update -y
-    sudo amazon-linux-extras install nginx1 -y
+    sudo yum install -y nginx
     sudo systemctl enable nginx
     sudo systemctl start nginx
     EOF
