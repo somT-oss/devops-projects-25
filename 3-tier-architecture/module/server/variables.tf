@@ -2,11 +2,19 @@ variable "vpc_cidr_block_ip" {
     type = string
 }
 
-variable "subnet_cidr_block_ip" {
+variable "subnet_1_cidr_block_ip" {
     type = string 
 }
 
-variable "availability_zone" {
+variable "subnet_2_cidr_block_ip" {
+    type = string
+}
+
+variable "availability_zone_1" {
+    type = string
+}
+
+variable "availability_zone_2" {
     type = string
 }
 

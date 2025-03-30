@@ -22,18 +22,33 @@ resource "aws_vpc" "webserver_vpc" {
     }
 }
 
-resource "aws_subnet" "webserver_subnet" {
+resource "aws_subnet" "webserver_subnet_1" {
     vpc_id = aws_vpc.webserver_vpc.id
-    cidr_block = var.subnet_cidr_block_ip
-    availability_zone = var.availability_zone
+    cidr_block = var.subnet_1_cidr_block_ip
+    availability_zone = var.availability_zone_1
     map_public_ip_on_launch = true
     
 
     tags = {
-        Name = "webserver_subnet"
+        Name = "webserver_subnet_1"
     }
     depends_on = [aws_vpc.webserver_vpc]
 }
+
+
+resource "aws_subnet" "webserver_subnet_2" {
+    vpc_id = aws_vpc.webserver_vpc.id
+    cidr_block = var.subnet_2_cidr_block_ip
+    availability_zone = var.availability_zone_2
+    map_public_ip_on_launch = true
+    
+
+    tags = {
+        Name = "webserver_subnet_2"
+    }
+    depends_on = [aws_vpc.webserver_vpc]
+}
+
 
 resource "aws_internet_gateway" "webserver_ig" {
     vpc_id = aws_vpc.webserver_vpc.id
@@ -57,7 +72,7 @@ resource "aws_route_table" "webserver_rt" {
 }
 
 resource "aws_route_table_association" "webserver_rta" {
-    subnet_id = aws_subnet.webserver_subnet.id
+    subnet_id = aws_subnet.webserver_subnet_1.id
     route_table_id = aws_route_table.webserver_rt.id
 }
 
@@ -100,7 +115,7 @@ resource "aws_instance" "webserver" {
     ami = var.instance_ami
     instance_type = var.instance_type
     associate_public_ip_address = true
-    subnet_id = aws_subnet.webserver_subnet.id
+    subnet_id = aws_subnet.webserver_subnet_1.id
     vpc_security_group_ids = [aws_security_group.webserver_sg.id]
     key_name = aws_key_pair.ssh_key_pair.key_name
 
